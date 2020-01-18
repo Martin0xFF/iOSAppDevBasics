@@ -1,4 +1,5 @@
-name,star_sign,alignment
-Vriska Serket,Scorpio,Chaotic Good
-Karkat Vantas,Cancer,Lawful Good
-Nepeta Leijon,Leo,Chaotic Cat
+name,star_sign,alignment,health_data
+Vriska Serket,Scorpio,Chaotic Good,90
+Karkat Vantas,Cancer,Lawful Good,23
+Nepeta Leijon,Leo,Chaotic Cat,10
+

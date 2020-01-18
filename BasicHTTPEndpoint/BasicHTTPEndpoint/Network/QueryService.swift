@@ -28,46 +28,49 @@ class QueryService{
       //
       // MARK: - Internal Methods
       //
+      // Here this function just gets the all the results from the local server
+      // You can add a query by uncommenting the urlComponents.query line and adding a searchTerm
       func getSearchResults(searchTerm: String, completion: @escaping QueryResult) {
         dataTask?.cancel()
         // use your computer's ip address (i.e. http://<your ip>:5000/...)
         if var urlComponents = URLComponents(string: "http://192.168.0.16:5000/starSigns/all"){
-          //urlComponents.query = "media=music&entity=song&term=\(searchTerm)"
+          //urlComponents.query = "searchField=\(searchTerm)"
           guard let url = urlComponents.url else {
             return
           }
         
         dataTask =
           defaultSession.dataTask(with: url){[weak self] data, response, error in
+            //defer causes the code within the block to be executed after all in scope
             defer {
               self?.dataTask = nil
             }
         
-        
-        if let error = error {
-          self?.errorMessage += "DataTask error: " +
-          error.localizedDescription + "\n"
-        }else if
-          let data = data,
-          let response = response as? HTTPURLResponse,
-          response.statusCode == 200 {
-          self?.updateSearchResults(data)
-          DispatchQueue.main.async {
-            completion(self?.persons,
-                       self?.errorMessage ?? "")
+            if let error = error {
+              self?.errorMessage += "DataTask error: " +
+              error.localizedDescription + "\n"
+            }
+            else if
+              let data = data,
+              let response = response as? HTTPURLResponse,
+              response.statusCode == 200 {
+                self?.updateSearchResults(data)
+                DispatchQueue.main.async {
+                  completion(self?.persons, self?.errorMessage ?? "")
+                }
+              }
           }
-        }
-      }
         dataTask?.resume()
     }
         DispatchQueue.main.async {
           completion(self.persons, self.errorMessage)
         }
-      }
+ }
 
       //
       // MARK: - Private Methods
       //
+      // Modify UI elements based on response data
       private func updateSearchResults(_ data: Data) {
         var response: JSONDictionary?
         persons.removeAll()
@@ -90,8 +93,9 @@ class QueryService{
           if let personDictionary = personDictionary as? JSONDictionary,
             let starSign = personDictionary["star_sign"] as? String,
             let name = personDictionary["name"] as? String,
-            let alignment = personDictionary["alignment"] as? String {
-            persons.append(Person(name: name, id: index, alignment: alignment, starSign:starSign ))
+            let alignment = personDictionary["alignment"] as? String,
+            let healthData = personDictionary["health_data"] as? Float{
+            persons.append(Person(name: name, id: index, alignment: alignment, starSign:starSign, healthData: healthData ))
               index += 1
           } else {
             errorMessage += "Problem parsing nameDictionary\n"

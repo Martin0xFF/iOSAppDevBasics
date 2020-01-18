@@ -5,6 +5,7 @@
 //  Created by Martin Ffrench on 2020-01-16.
 //  Copyright © 2020 Martin Ffrench. All rights reserved.
 //
+// In this class, we create a nice object to store our Person data
 import Foundation.NSURL
 
 class Person {
@@ -15,7 +16,7 @@ class Person {
   let id: Int
   let alignment: String
   let starSign: String
-  
+  let healthData:Float
   //
   //MARK: - Variables
   //
@@ -24,10 +25,12 @@ class Person {
   //
   // MARK: - Initialization
   //
-  init(name: String, id: Int, alignment: String, starSign: String) {
+  // When the person class is called, it will run through the below function so we know what values the person will have.
+    init(name: String, id: Int, alignment: String, starSign: String, healthData: Float) {
     self.name = name
     self.id = id
     self.alignment = alignment
     self.starSign = starSign
+    self.healthData = healthData
   }
 }

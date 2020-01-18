@@ -63,7 +63,8 @@ def fetch_people(query=''):
         results.append({'id': index,
                         'name': row['name'],
                         'alignment': row['alignment'],
-                        'star_sign': row['star_sign'] 
+                        'star_sign': row['star_sign'], 
+                        'health_data': row['health_data']
                        })
     
     star_signs = {"results":results, "no_results": len(results)}
